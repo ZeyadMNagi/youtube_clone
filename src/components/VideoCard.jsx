@@ -16,7 +16,6 @@ const VideoCard = ({
     snippet,
   },
 }) => {
-  console.log(videoId, snippet);
   return (
     <Card
       sx={{
@@ -36,11 +35,7 @@ const VideoCard = ({
         />
         <CardContent sx={{ background: "#1e1e1e", height: "106px" }}>
           <Link to={videoId ? `/video/${videoId}` : demoVideoUrl}>
-            <Typography
-              variant="subtitle1"
-              fontWeight="bold"
-              color="#fff"
-            >
+            <Typography variant="subtitle1" fontWeight="bold" color="#fff">
               {snippet?.title.slice(0, 60) || demoVideoTitle}
             </Typography>
           </Link>
@@ -52,13 +47,9 @@ const VideoCard = ({
                 : demoChannelUrl
             }
           >
-            <Typography
-              variant="subtitle2"
-              fontWeight="bold"
-              color="gray"
-            >
-              <CheckCircle color="success" />{" "}
+            <Typography variant="subtitle2" fontWeight="bold" color="gray">
               {snippet?.channelTitle.slice(0, 60) || demoChannelTitle}
+              <CheckCircle color="success" sx={{ ml: "5px", fontSize: 12 }} />{" "}
             </Typography>
           </Link>
         </CardContent>
