@@ -29,7 +29,6 @@ const VideoCard = ({
           image={snippet?.thumbnails?.high?.url || demoThumbnailUrl}
           alt={snippet?.title}
           sx={{
-            width: 358,
             height: 180,
           }}
         />
