@@ -10,22 +10,20 @@ import {
   CardActionArea,
   CardContent,
   Grid,
+  Divider,
 } from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
+import { CheckCircle, ThumbUp } from "@mui/icons-material";
 
 import { fetchFromAPI } from "../utils/fetchFromAPI";
 
-import {
-  demoVideoTitle,
-  demoChannelTitle,
-  demoVideoDescription,
-} from "../utils/constants";
+import { demoVideoTitle, demoChannelTitle } from "../utils/constants";
 
 const VideoDetail = () => {
   const { id } = useParams();
   const [videoData, setVideoData] = useState(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [relatedVideos, setRelatedVideos] = useState([]);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     // Fetch details of the current video
@@ -37,11 +35,24 @@ const VideoDetail = () => {
     fetchFromAPI(
       `search?part=snippet&relatedToVideoId=${id}&type=video&maxResults=3`
     ).then((data) => setRelatedVideos(data.items));
+
+    // Fetch  comments for the video
+    fetchFromAPI(`commentThreads?part=snippet&videoId=${id}&maxResults=25`)
+      .then((response) => response.items)
+      .then((data) => {
+        setComments(data);
+        console.log(data);
+      })
+      .catch((error) => console.log("Error:", error));
   }, [id]);
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
+
+  console.log("Video Data: ", videoData);
+  console.log("Related Videos: ", relatedVideos);
+  console.log("Comments: ", comments);
 
   return (
     <Box minHeight="95vh" overflow="auto">
@@ -57,31 +68,39 @@ const VideoDetail = () => {
               <Typography variant="h4" mb={2}>
                 {videoData?.snippet?.title || demoVideoTitle}
               </Typography>
-              <Typography variant="subtitle1" mb={2}>
+              <Typography color="#fff" variant="subtitle1" mb={2}>
                 Published on{" "}
-                <Link color="primary" underline="none">
+                <Link underline="none" className="date">
                   {new Date(videoData?.snippet?.publishedAt).toDateString() ||
                     `Date is not set`}
                 </Link>{" "}
-                by {videoData?.snippet?.channelTitle || demoChannelTitle}
+                by
+                <Link
+                  to={`/channel/${videoData?.snippet?.channelId}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="channelName"
+                >
+                  {videoData?.snippet?.channelTitle || demoChannelTitle}
+                  <CheckCircle fontSize="small" color="success" />
+                </Link>
               </Typography>
               <Stack spacing={2} mb={4}>
-                <Typography variant="subtitle2">Views</Typography>
-                <Typography variant="body1">
-                  <CheckCircle fontSize="small" color="success" />
-                  {new Intl.NumberFormat("en-US").format(
-                    videoData?.statistics?.viewCount
-                  ) || "1,000,000"}
-                </Typography>
+                Views:{" "}
+                {new Intl.NumberFormat("en-US").format(
+                  videoData?.statistics?.viewCount
+                ) || "1,000,000"}
+                <br />
+                <ThumbUp />{" "}
+                {new Intl.NumberFormat().format(
+                  videoData?.statistics?.likeCount
+                )}
                 <Box>
                   <Typography variant="subtitle2">Description</Typography>
                   <Typography>
                     {showFullDescription
                       ? videoData?.snippet?.description
-                      : videoData?.snippet?.description.slice(0, 200) ||
-                        showFullDescription
-                      ? demoVideoDescription
-                      : demoVideoDescription.slice(0, 200)}
+                      : videoData?.snippet?.description.slice(0, 200) + "..."}
                   </Typography>
                   {videoData?.snippet?.description.length > 200 && (
                     <Button onClick={toggleDescription}>
@@ -89,10 +108,48 @@ const VideoDetail = () => {
                     </Button>
                   )}
                 </Box>
+                <Typography variant="subtitle2">Comments</Typography>
+                {comments
+                  ? comments.map((comment) => (
+                      <Box
+                        key={id}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <img
+                          src={
+                            comment?.snippet?.topLevelComment?.snippet
+                              ?.authorProfileImageUrl
+                          }
+                          style={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: "50%",
+                            marginRight: 8,
+                          }}
+                          alt=""
+                        />
+                        <strong>
+                          {
+                            comment?.snippet?.topLevelComment?.snippet
+                              ?.authorDisplayName
+                          }
+                          :{" "}
+                        </strong>
+                        {
+                          comment?.snippet?.topLevelComment?.snippet
+                            ?.textOriginal
+                        }
+                      </Box>
+                    ))
+                  : "No comments yet"}
+                <Divider sx={{ my: 3 }} />
               </Stack>
             </Box>
           </Box>
-          {/* Related Videos */}
           <Box flex={1}>
             <Typography variant="h5" mb={2}>
               Related Videos

@@ -56,11 +56,29 @@ a {
   background: transparent;
   outline: none;
   border: none;
-
   padding: 7px 15px;
   margin: 10px 0px;
   border-radius: 20px;
   transition: all 0.3s ease;
+}
+
+.channelName {
+  padding: 15px;
+  margin: 7px;
+  border-radius: 12px;
+  font-size: 18px;
+  line-height: 14px;
+  letter-spacing: -0.06em;
+  font-weight: 900;
+  color: #fefefe;
+  background: #333;
+}
+
+.date {
+  color: #fefefe;
+  font-size: 18px;
+  font-family: "math";
+  font-weight: 700;
 }
 
 @media screen and (max-width: 900px) {
