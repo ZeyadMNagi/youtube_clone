@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import { demoProfilePicture, demoChannelTitle } from "../utils/constants";
 
 const ChannelCard = ({ channelDetail }) => {
-  console.log(channelDetail);
-  const subCount = channelDetail?.statistics?.subscriberCount;
   return (
     <Box
       sx={{
@@ -19,6 +17,8 @@ const ChannelCard = ({ channelDetail }) => {
         width: { xs: "350px", md: "320px" },
         height: "326px",
         margin: "auto",
+        zIndex: "2",
+        position: "relative",
       }}
     >
       <Link to={`/channel/${channelDetail?.id?.channelId}`}>
@@ -62,11 +62,13 @@ const ChannelCard = ({ channelDetail }) => {
             </Link>
           </Typography>
           {/* Subscribers */}
-          {subCount && (
+          {channelDetail?.statistics?.subscriberCount && (
             <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
               <People sx={{ mr: 0.5 }} fontSize="small" />
               <Typography variant="body2">
-                {parseInt(subCount).toLocaleString}
+                {parseInt(
+                  channelDetail?.statistics?.subscriberCount
+                ).toLocaleString()}
               </Typography>
             </Box>
           )}
