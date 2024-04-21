@@ -14,7 +14,7 @@ const Navbar = () => (
       justifyContent: "space-between",
       position: "sticky",
       top: 0,
-      background: "#000",
+      background: "#111",
     }}
   >
     <Link

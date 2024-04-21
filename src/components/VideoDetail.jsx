@@ -55,7 +55,7 @@ const VideoDetail = () => {
   console.log("Comments: ", comments);
 
   return (
-    <Box minHeight="95vh" overflow="auto">
+    <Box minHeight="95vh" overflow="auto" >
       <Box p={2}>
         <Stack direction={{ xs: "column", md: "row" }} spacing={4}>
           <Box flex={2}>
