@@ -16,14 +16,12 @@ const ChannelDetail = () => {
   useEffect(() => {
     fetchFromAPI(`channels?part=snippet&id=${id}`).then((data) => {
       setChannelData(data?.items);
-      console.table(data);
     });
     fetchFromAPI(`search?channelId=${id}&part=snippet&order=date`).then(
       (data) => setVideos(data?.items)
     );
   }, [id]);
 
-  console.log("Channel Data", ChannelData);
 
   return (
     <Box minHeight="92vh">
@@ -43,7 +41,7 @@ const ChannelDetail = () => {
         />
       </Box>
       <Box>
-        {ChannelData ? <ChannelCard channelDetail={ChannelData} /> : null}
+        <ChannelCard channelDetail={ChannelData} />
       </Box>
       <Box
         sx={{
