@@ -27,21 +27,22 @@ const VideoDetail = () => {
 
   useEffect(() => {
     // Fetch details of the current video
-    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`).then((data) =>
-      setVideoData(data.items[0])
-    );
+    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`)
+      .then((data) => setVideoData(data.items[0]))
+      .catch((error) => console.log("Error:", error));
 
     // Fetch related videos
     fetchFromAPI(
       `search?part=snippet&relatedToVideoId=${id}&type=video&maxResults=3`
-    ).then((data) => setRelatedVideos(data.items));
+    )
+      .then((data) => setRelatedVideos(data.items))
+      .catch((error) => console.log("Error:", error));
 
     // Fetch  comments for the video
     fetchFromAPI(`commentThreads?part=snippet&videoId=${id}&maxResults=25`)
       .then((response) => response.items)
       .then((data) => {
         setComments(data);
-        console.log(data);
       })
       .catch((error) => console.log("Error:", error));
   }, [id]);
@@ -50,12 +51,8 @@ const VideoDetail = () => {
     setShowFullDescription(!showFullDescription);
   };
 
-  console.log("Video Data: ", videoData);
-  console.log("Related Videos: ", relatedVideos);
-  console.log("Comments: ", comments);
-
   return (
-    <Box minHeight="95vh" overflow="auto" >
+    <Box minHeight="95vh" overflow="auto">
       <Box p={2}>
         <Stack direction={{ xs: "column", md: "row" }} spacing={4}>
           <Box flex={2}>
