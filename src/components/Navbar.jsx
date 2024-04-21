@@ -10,7 +10,7 @@ const Navbar = () => (
     alignItems="center"
     p={2}
     sx={{
-      zIndex : 999,
+      zIndex: 999,
       justifyContent: "space-between",
       position: "sticky",
       top: 0,
@@ -22,13 +22,11 @@ const Navbar = () => (
       style={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
       }}
     >
       <img src={logo.src} alt={logo.alt} height={48} />
-      <SearchBar />
     </Link>
+    <SearchBar />
   </Stack>
 );
 
