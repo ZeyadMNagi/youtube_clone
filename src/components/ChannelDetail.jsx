@@ -10,18 +10,25 @@ import { RemoveRedEye } from "@mui/icons-material";
 const ChannelDetail = () => {
   const [ChannelData, setChannelData] = useState(null);
   const [videos, setVideos] = useState([]);
-
   const { id } = useParams();
 
   useEffect(() => {
-    fetchFromAPI(`channels?part=snippet&id=${id}`).then((data) => {
-      setChannelData(data?.items);
-    });
-    fetchFromAPI(`search?channelId=${id}&part=snippet&order=date`).then(
-      (data) => setVideos(data?.items)
-    );
+    fetchFromAPI(`channels?part=snippet&id=${id}`)
+      .then((data) => setChannelData(data?.items))
+      .catch(console.error);
+    fetchFromAPI(`search?channelId=${id}&part=snippet&order=date`)
+      .then((data) => setVideos(data?.items))
+      .catch(console.error);
   }, [id]);
 
+  console.log(ChannelData);
+
+  if (!ChannelData) {
+    return <div>Loading...</div>;
+  }
+
+  const channelDetail = ChannelData[0] || {};
+  const viewCount = parseInt(ChannelData[0]?.statistics?.viewCount || 0);
 
   return (
     <Box minHeight="92vh">
@@ -41,7 +48,7 @@ const ChannelDetail = () => {
         />
       </Box>
       <Box>
-        <ChannelCard channelDetail={ChannelData} />
+        <ChannelCard channelDetail={channelDetail} />
       </Box>
       <Box
         sx={{
@@ -58,7 +65,7 @@ const ChannelDetail = () => {
           }}
         >
           About
-          <p>{ChannelData?.snippet?.description}</p>
+          <p>{channelDetail?.snipper?.description}</p>
           <h3
             style={{
               fontFamily: "math",
@@ -67,7 +74,7 @@ const ChannelDetail = () => {
               fontWeight: "bold",
             }}
           >
-            {parseInt(ChannelData?.statistics?.viewCount).toLocaleString()}
+            {viewCount.toLocaleString()}
             <RemoveRedEye sx={{ ml: "5px", fontSize: 15 }} />
           </h3>
           <br />
@@ -80,7 +87,7 @@ const ChannelDetail = () => {
               fontWeight: "bold",
             }}
           >
-            {ChannelData?.snippet?.title} Videos
+            {channelDetail?.snipper?.title} Videos
           </h2>
         </Box>
         <Videos title="Related Videos" videos={videos} />

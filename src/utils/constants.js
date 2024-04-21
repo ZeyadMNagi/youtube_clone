@@ -40,3 +40,8 @@ export const demoChannelTitle = "Demo  Channel Title";
 export const demoVideoTitle = "This is a Demo Video!";
 export const demoProfilePicture =
   "http://dergipark.org.tr/assets/app/images/buddy_sample.png";
+export const demoVideoDescription = `
+In this API course, we will guide you through the process of creating an application using React and Next.js. We will start by explaining theThis video is about API course which includes the bas
+This video is about API course which includes the basics of RESTful APIs, JSON Web Tokens (JWT), and how to use themWelcome to the API course, where you willThis video is about API course which includes the bas
+Welcome to the API course, where we will guide you through the process of building your own web application using React and Node.js. We
+This video showcases the features of our platform. It includes information about API endpoints, how to use them and what they return. You canWelcome to the API course, where we willWelcome to the API course, where we willThis is the description of the video`;
